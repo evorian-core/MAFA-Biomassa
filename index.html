@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MAFA Biomassa | Energia que Move o Futuro</title>
+  
+  <!-- Fontes Google -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  
+  <!-- Ícones Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    /* ==========================================================================
+       1. VARIÁVEIS DE DESIGN E CSS RESET
+       ========================================================================== */
+    :root {
+      --bg-dark: #0d140e;
+      --bg-card: rgba(22, 34, 24, 0.65);
+      --green-primary: #1e3a29;
+      --green-accent: #2e6f40;
+      --green-leaf: #43a047;
+      --amber-glow: #e67e22;
+      --amber-bright: #f39c12;
+      --sand-light: #f4f1ea;
+      --text-muted: #a3b1a6;
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --font-main: 'Montserrat', sans-serif;
+      --font-heading: 'Space Grotesk', sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--sand-light);
+      font-family: var(--font-main);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Rastro do Cursor Personalizado */
+    .particle-cursor {
+      position: fixed;
+      pointer-events: none;
+      width: 6px;
+      height: 6px;
+      background: var(--amber-bright);
+      border-radius: 50%;
+      z-index: 9999;
+      opacity: 0.8;
+      transition: transform 0.2s ease, opacity 0.5s ease;
+    }
+
+    /* ==========================================================================
+       2. TELA DE CARREGAMENTO (PRELOADER)
+       ========================================================================== */
+    #preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #080c09;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+
+    .loader-content {
+      text-align: center;
+      max-width: 400px;
+      width: 80%;
+    }
+
+    .loader-title {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-bottom: 5px;
+      color: var(--sand-light);
+    }
+
+    .loader-subtitle {
+      font-size: 0.85rem;
+      color: var(--amber-glow);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 25px;
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .progress-bar-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--green-leaf), var(--amber-glow));
+      transition: width 0.1s ease;
+    }
+
+    .loader-signatures {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      opacity: 0.7;
+    }
+
+    /* ==========================================================================
+       3. NAVEGAÇÃO & MENU
+       ========================================================================== */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 20px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      transition: background 0.4s ease, padding 0.4s ease;
+    }
+
+    header.scrolled {
+      background: rgba(13, 20, 14, 0.92);
+      backdrop-filter: blur(10px);
+      padding: 12px 50px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-mark {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--green-leaf), var(--amber-glow));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .logo-text {
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--sand-light);
+    }
+
+    .logo-text span {
+      color: var(--amber-glow);
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+    }
+
+    nav a {
+      color: var(--sand-light);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: var(--amber-glow);
+    }
+
+    .btn-cta {
+      background: linear-gradient(135deg, var(--amber-glow), var(--amber-bright));
+      color: #000;
+      padding: 10px 22px;
+      border-radius: 4px;
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(230, 126, 34, 0.4);
+    }
+
+    /* ==========================================================================
+       4. HERO SECTION COM CANVAS DE PARTÍCULAS
+       ========================================================================== */
+    .hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 0 10%;
+      overflow: hidden;
+    }
+
+    #particles-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 750px;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      padding: 6px 14px;
+      background: rgba(46, 111, 64, 0.3);
+      border: 1px solid var(--green-leaf);
+      border-radius: 20px;
+      color: var(--green-leaf);
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .hero h1 {
+      font-family: var(--font-heading);
+      font-size: 3.5rem;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 35px;
+      max-width: 600px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .btn-secondary {
+      border: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--sand-light);
+      padding: 12px 24px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      backdrop-filter: blur(5px);
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: var(--sand-light);
+    }
+
+    /* ==========================================================================
+       5. SEÇÕES DE CONTEÚDO (GERAL)
+       ========================================================================== */
+    section {
+      padding: 100px 10%;
+      position: relative;
+    }
+
+    .section-header {
+      margin-bottom: 60px;
+    }
+
+    .section-subtitle {
+      color: var(--amber-glow);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 700;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: 2.4rem;
+      font-weight: 700;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+      align-items: center;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 25px;
+    }
+
+    .card-glass {
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 30px;
+      backdrop-filter: blur(8px);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .card-glass:hover {
+      transform: translateY(-5px);
+      border-color: rgba(230, 126, 34, 0.4);
+    }
+
+    /* ==========================================================================
+       6. CONHEÇA OS PELLETS & APLICAÇÕES
+       ========================================================================== */
+    .icon-box {
+      width: 50px;
+      height: 50px;
+      background: rgba(230, 126, 34, 0.15);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--amber-glow);
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+
+    .card-glass h3 {
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+    }
+
+    .card-glass p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* ==========================================================================
+       7. PROCESSO DE FORNECIMENTO (TIMELINE)
+       ========================================================================== */
+    .timeline {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin-top: 40px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 25px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--glass-border);
+      z-index: 1;
+    }
+
+    .timeline-step {
+      position: relative;
+      z-index: 2;
+      background: var(--bg-dark);
+      padding: 0 10px;
+      text-align: center;
+      flex: 1;
+    }
+
+    .step-number {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 2px solid var(--green-leaf);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px auto;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      color: var(--sand-light);
+    }
+
+    .timeline-step h4 {
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+
+    .timeline-step p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       8. ATENDIMENTO E LOGÍSTICA
+       ========================================================================== */
+    .map-box {
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .badge-location {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--amber-glow);
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    /* ==========================================================================
+       9. RODAPÉ INSTITUCIONAL
+       ========================================================================== */
+    footer {
+      background: #050806;
+      border-top: 1px solid var(--glass-border);
+      padding: 60px 10% 30px 10%;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+
+    .footer-brand p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      max-width: 300px;
+      margin-top: 15px;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .footer-signatures {
+      display: flex;
+      gap: 15px;
+    }
+
+    /* ==========================================================================
+       10. RESPONSIVIDADE
+       ========================================================================== */
+    @media (max-width: 992px) {
+      .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+      }
+      .timeline {
+        flex-direction: column;
+        gap: 30px;
+      }
+      .timeline::before {
+        display: none;
+      }
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      header {
+        padding: 15px 20px;
+      }
+      nav {
+        display: none; /* Simplificação para protótipo mobile */
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Rastro de Cursor -->
+  <div class="particle-cursor" id="cursor"></div>
+
+  <!-- 1. TELA DE CARREGAMENTO -->
+  <div id="preloader">
+    <div class="loader-content">
+      <div class="loader-title">MAFA BIOMASSA</div>
+      <div class="loader-subtitle">Energia Limpa & Alta Performance</div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+      </div>
+      <div class="loader-signatures">
+        <span>by OMNIA</span>
+        <span>•</span>
+        <span>Powered by EVORIAN</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER / MENU -->
+  <header id="header">
+    <div class="logo-container">
+      <div class="logo-mark"><i class="fa-solid fa-tree"></i></div>
+      <div class="logo-text">MAFA <span>BIOMASSA</span></div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#empresa">A Empresa</a></li>
+        <li><a href="#pellets">Os Pellets</a></li>
+        <li><a href="#processo">Processo</a></li>
+        <li><a href="#aplicacoes">Aplicações</a></li>
+        <li><a href="#logistica">Atendimento</a></li>
+      </ul>
+    </nav>
+    <a href="https://wa.me/554298018935" target="_blank" class="btn-cta">
+      <i class="fa-brands fa-whatsapp"></i> Orçamento
+    </a>
+  </header>
+
+  <!-- 2. SEÇÃO HERO -->
+  <section class="hero" id="home">
+    <canvas id="particles-canvas"></canvas>
+    <div class="hero-content">
+      <span class="hero-tag">Biomassa Florestal de Alta Performance</span>
+      <h1>Soluções Sustentáveis em Energia Térmica</h1>
+      <p>Produção e fornecimento continuo de pellets de madeira selecionada para operações comerciais e industriais em toda a Região Sul.</p>
+      <div class="hero-buttons">
+        <a href="https://wa.me/554298018935" target="_blank" class="btn-cta">Solicitar Orçamento</a>
+        <a href="#pellets" class="btn-secondary">Conhecer os Pellets</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. APRESENTAÇÃO DA EMPRESA -->
+  <section id="empresa">
+    <div class="grid-2">
+      <div>
+        <span class="section-subtitle">Sobre a MAFA Biomassa</span>
+        <h2 class="section-title">Eficiência Energética com Responsabilidade</h2>
+      </div>
+      <div>
+        <p style="color: var(--text-muted); margin-bottom: 20px;">
+          A MAFA Biomassa atua no desenvolvimento e fornecimento de pellets de madeira de alta qualidade, focados na substituição de combustíveis fósseis e no aumento da eficiência térmica de caldeiras, secadores e fornos industriais.
+        </p>
+        <p style="color: var(--text-muted);">
+          Com um modelo operacional estruturado para garantir regularidade na entrega, atendemos às rigorosas exigências do setor produtivo com confiabilidade e transparência.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. CONHEÇA OS PELLETS DE MADEIRA -->
+  <section id="pellets" style="background: rgba(0,0,0,0.2);">
+    <div class="section-header">
+      <span class="section-subtitle">O Produto</span>
+      <h2 class="section-title">Alta Densidade Energética e Padronização</h2>
+    </div>
+    <div class="grid-3">
+      <div class="card-glass">
+        <div class="icon-box"><i class="fa-solid fa-compress"></i></div>
+        <h3>Alta Compactação</h3>
+        <p>Produzidos a partir de serragem e cavacos de madeira prensados sob alta pressão, garantindo elevado poder calorífico por volume.</p>
+      </div>
+      <div class="card-glass">
+        <div class="icon-box"><i class="fa-solid fa-droplet-slash"></i></div>
+        <h3>Baixa Umidade</h3>
+        <p>Processo controlado de secagem que assegura combustão eficiente, reduzindo a emissão de fumaça e o acúmulo de resíduos nos queimadores.</p>
+      </div>
+      <div class="card-glass">
+        <div class="icon-box"><i class="fa-solid fa-gears"></i></div>
+        <h3>Automação Facilitada</h3>
+        <p>A granulometria padronizada permite o transporte automatizado por roscas transportadoras diretamente aos sistemas de queima.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. PROCESSO E FORNECIMENTO -->
+  <section id="processo">
+    <div class="section-header" style="text-align: center;">
+      <span class="section-subtitle">Fluxo Operacional</span>
+      <h2 class="section-title">Da Matéria-Prima à Entrega Comercial</h2>
+    </div>
+    <div class="timeline">
+      <div class="timeline-step">
+        <div class="step-number">01</div>
+        <h4>Seleção da Madeira</h4>
+        <p>Resíduos florestais de origem controlada e sustentável.</p>
+      </div>
+      <div class="timeline-step">
+        <div class="step-number">02</div>
+        <h4>Secagem & Prensagem</h4>
+        <p>Processamento mecânico sem adição de aglutinantes químicos.</p>
+      </div>
+      <div class="timeline-step">
+        <div class="step-number">03</div>
+        <h4>Controle de Qualidade</h4>
+        <p>Monitoramento rigoroso de umidade e resistência do pellet.</p>
+      </div>
+      <div class="timeline-step">
+        <div class="step-number">04</div>
+        <h4>Logística & Fornecimento</h4>
+        <p>Expedição programada para manutenção do estoque do cliente.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. APLICAÇÕES DOS PELLETS -->
+  <section id="aplicacoes" style="background: rgba(0,0,0,0.2);">
+    <div class="section-header">
+      <span class="section-subtitle">Setores Atendidos</span>
+      <h2 class="section-title">Versatilidade para Diversas Operações Térmicas</h2>
+    </div>
+    <div class="grid-4">
+      <div class="card-glass">
+        <div class="icon-box"><i class="fa-solid fa-industry"></i></div>
+        <h3>Indústrias</h3>
+        <p>Geração de vapor em caldeiras de médio e grande porte.</p>
+      </div>
+      <div class="card-glass">
+        <div class="icon-box"><i class="fa-solid fa-bread-slice"></i></div>
+        <h3>Padarias & Panificadoras</h3>
+        <p>Fornecimento térmico constante para fornos comerciais.</p>
+      </div>
+      <div class="card-glass">
+        <div class="icon-box"><i class="fa-solid fa-hotel"></i></div>
+        <h3>Hotéis & Parques Aquáticos</h3>
+        <p>Aquecimento central de água de forma contínua e limpa.</p>
+      </div>
+      <div class="card-glass">
+        <div class="icon-box"><i class="fa-solid fa-shirt"></i></div>
+        <h3>Lavanderias Industriais</h3>
+        <p>Processos que exigem vapor estável e alta eficiência energética.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. DIFERENCIAIS E BENEFÍCIOS -->
+  <section id="diferenciais">
+    <div class="grid-2">
+      <div>
+        <span class="section-subtitle">Diferenciais Operacionais</span>
+        <h2 class="section-title">Por que Escolher a MAFA Biomassa?</h2>
+      </div>
+      <div class="grid-2" style="gap: 20px;">
+        <div class="card-glass">
+          <h4 style="color: var(--amber-glow); margin-bottom: 8px;">Estoque Regular</h4>
+          <p style="font-size: 0.85rem;">Garantia de fornecimento para evitar interrupções na sua produção.</p>
+        </div>
+        <div class="card-glass">
+          <h4 style="color: var(--amber-glow); margin-bottom: 8px;">Manejo Limpo</h4>
+          <p style="font-size: 0.85rem;">Facilidade de armazenamento em silos ou bags com espaço otimizado.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. ÁREA DE ATENDIMENTO E LOGÍSTICA -->
+  <section id="logistica" style="background: rgba(0,0,0,0.2);">
+    <div class="map-box">
+      <div class="badge-location">
+        <i class="fa-solid fa-location-dot"></i> Imbituva — Paraná
+      </div>
+      <h2 class="section-title" style="margin-bottom: 15px;">Atendimento em Toda a Região Sul</h2>
+      <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto 30px auto;">
+        Localização estratégica no Estado do Paraná, estruturada para atender com agilidade e eficiência operações nos estados do Paraná, Santa Catarina e Rio Grande do Sul.
+      </p>
+      <a href="https://wa.me/554298018935" target="_blank" class="btn-cta">
+        Consultar Condições de Entrega
+      </a>
+    </div>
+  </section>
+
+  <!-- 9. RODAPÉ INSTITUCIONAL -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <div class="logo-text">MAFA <span>BIOMASSA</span></div>
+        <p>Energia renovável e biomassa de alta performance para o setor industrial e comercial.</p>
+      </div>
+      <div>
+        <h4 style="margin-bottom: 15px; color: var(--sand-light);">Contato Comercial</h4>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">
+          <i class="fa-brands fa-whatsapp" style="color: var(--amber-glow);"></i> +55 (42) 9801-8935<br>
+          <i class="fa-solid fa-location-dot" style="color: var(--amber-glow);"></i> Imbituva - PR
+        </p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>&copy; 2026 MAFA Biomassa. Todos os direitos reservados.</div>
+      <div class="footer-signatures">
+        <span>by OMNIA</span>
+        <span>•</span>
+        <span>Powered by EVORIAN</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS DE INTERAÇÃO E ANIMAÇÃO -->
+  <script>
+    // 1. Simulação do Preloader
+    window.addEventListener('load', () => {
+      const fill = document.getElementById('progress-fill');
+      const preloader = document.getElementById('preloader');
+      let width = 0;
+      const interval = setInterval(() => {
+        if (width >= 100) {
+          clearInterval(interval);
+          preloader.style.opacity = '0';
+          preloader.style.visibility = 'hidden';
+        } else {
+          width += 5;
+          fill.style.width = width + '%';
+        }
+      }, 30);
+    });
+
+    // 2. Transição do Header ao Rolar
+    window.addEventListener('scroll', () => {
+      const header = document.getElementById('header');
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // 3. Canvas de Partículas (Efeito Faíscas/Calor no Hero)
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const particles = [];
+    const particleCount = 60;
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = canvas.height + Math.random() * 100;
+        this.size = Math.random() * 3 + 1;
+        this.speedY = Math.random() * 1.5 + 0.5;
+        this.speedX = (Math.random() - 0.5) * 0.5;
+        this.opacity = Math.random() * 0.7 + 0.3;
+        this.color = Math.random() > 0.5 ? '#e67e22' : '#2e6f40';
+      }
+
+      update() {
+        this.y -= this.speedY;
+        this.x += this.speedX;
+        if (this.y < -10) {
+          this.reset();
+        }
+      }
+
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.globalAlpha = this.opacity;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // 4. Cursor Personalizado com Rastro Sutil
+    const cursor = document.getElementById('cursor');
+    window.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+    });
+  </script>
+</body>
+</html>
